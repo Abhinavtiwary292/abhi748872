@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Abhi Software Solutions</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --blue:      #0057ff;
+    --blue2:     #0099ff;
+    --blue3:     #00c6ff;
+    --dark-blue: #003bcc;
+    --white:     #ffffff;
+    --offwhite:  #f4f7ff;
+    --light:     #e8eeff;
+    --card:      #ffffff;
+    --border:    rgba(0,87,255,0.15);
+    --text:      #0a1535;
+    --muted:     #5a6a90;
+    --grad:      linear-gradient(120deg, #0057ff 0%, #00c6ff 100%);
+    --shadow:    0 8px 32px rgba(0,87,255,0.14);
+  }
+  *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--white); color: var(--text);
+    font-family: 'DM Sans', sans-serif; font-size: 16px; line-height: 1.6; overflow-x: hidden;
+  }
+  body::before {
+    content:''; position:fixed; inset:0;
+    background-image: radial-gradient(circle, rgba(0,87,255,0.07) 1.5px, transparent 1.5px);
+    background-size: 36px 36px; pointer-events:none; z-index:0;
+    animation: bgDrift 20s linear infinite;
+  }
+  @keyframes bgDrift { 0%{background-position:0 0} 100%{background-position:36px 36px} }
+
+  /* NAV */
+  nav {
+    position:fixed; top:0; left:0; right:0; z-index:1000;
+    display:flex; align-items:center; justify-content:space-between;
+    padding:0 5%; height:70px;
+    background:rgba(255,255,255,0.93); backdrop-filter:blur(20px);
+    border-bottom:1.5px solid var(--border);
+    animation: navSlide 0.4s cubic-bezier(0.22,1,0.36,1) both;
+  }
+  @keyframes navSlide { from{transform:translateY(-100%);opacity:0} to{transform:translateY(0);opacity:1} }
+  .nav-logo { display:flex; align-items:center; gap:11px; text-decoration:none; }
+  .logo-hex {
+    width:40px; height:40px; background:var(--grad);
+    clip-path:polygon(50% 0%,93% 25%,93% 75%,50% 100%,7% 75%,7% 25%);
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Syne',sans-serif; font-weight:800; font-size:13px; color:#fff;
+    animation: hexSpin 0.6s 0.3s cubic-bezier(0.34,1.56,0.64,1) both;
+  }
+  @keyframes hexSpin { from{transform:rotate(-180deg) scale(0);opacity:0} to{transform:rotate(0) scale(1);opacity:1} }
+  .nav-brand { font-family:'Syne',sans-serif; font-weight:700; font-size:1.1rem; color:var(--text); }
+  .nav-brand span { color:var(--blue); }
+  .nav-links { display:flex; gap:32px; list-style:none; }
+  .nav-links a {
+    color:var(--muted); text-decoration:none; font-size:0.86rem;
+    font-weight:600; letter-spacing:0.05em; text-transform:uppercase;
+    transition:color 0.15s; position:relative;
+  }
+  .nav-links a::after {
+    content:''; position:absolute; bottom:-4px; left:0; right:0; height:2px;
+    background:var(--grad); border-radius:2px;
+    transform:scaleX(0); transform-origin:left; transition:transform 0.2s cubic-bezier(0.22,1,0.36,1);
+  }
+  .nav-links a:hover { color:var(--blue); }
+  .nav-links a:hover::after { transform:scaleX(1); }
+  .nav-cta {
+    background:var(--grad); color:#fff !important; padding:9px 24px;
+    border-radius:50px; font-size:0.82rem !important; font-weight:700 !important;
+    box-shadow:0 4px 18px rgba(0,87,255,0.3);
+    transition:transform 0.15s,box-shadow 0.15s !important;
+  }
+  .nav-cta::after { display:none !important; }
+  .nav-cta:hover { transform:translateY(-2px) scale(1.04) !important; box-shadow:0 8px 28px rgba(0,87,255,0.45) !important; }
+
+  /* HERO */
+  #hero {
+    position:relative; min-height:100vh;
+    display:flex; align-items:center; justify-content:center;
+    text-align:center; padding:120px 5% 80px; z-index:1; overflow:hidden;
+    background:linear-gradient(160deg,#f0f4ff 0%,#ffffff 60%,#e8f3ff 100%);
+  }
+  .ring {
+    position:absolute; border-radius:50%; border:1.5px solid rgba(0,87,255,0.12);
+    top:50%; left:50%; transform:translate(-50%,-50%);
+    animation:ringExpand 2.4s cubic-bezier(0.22,1,0.36,1) infinite; pointer-events:none;
+  }
+  .ring:nth-child(1){width:300px;height:300px;animation-delay:0s}
+  .ring:nth-child(2){width:500px;height:500px;animation-delay:0.5s}
+  .ring:nth-child(3){width:720px;height:720px;animation-delay:1s}
+  .ring:nth-child(4){width:940px;height:940px;animation-delay:1.5s}
+  @keyframes ringExpand {
+    0%  {opacity:0.7;transform:translate(-50%,-50%) scale(0.8)}
+    100%{opacity:0;  transform:translate(-50%,-50%) scale(1.2)}
+  }
+  .hero-orb {
+    position:absolute; width:480px; height:480px; border-radius:50%;
+    background:radial-gradient(circle,rgba(0,150,255,0.12) 0%,transparent 70%);
+    top:50%; left:50%; transform:translate(-50%,-50%);
+    animation:orbPulse 1.8s ease-in-out infinite; pointer-events:none;
+  }
+  @keyframes orbPulse {
+    0%,100%{transform:translate(-50%,-50%) scale(1);opacity:1}
+    50%{transform:translate(-50%,-50%) scale(1.08);opacity:0.5}
+  }
+  .hero-badge {
+    display:inline-flex; align-items:center; gap:7px;
+    border:1.5px solid rgba(0,87,255,0.2); background:rgba(0,87,255,0.06);
+    color:var(--blue); font-size:0.76rem; font-weight:700; letter-spacing:0.14em;
+    text-transform:uppercase; padding:7px 20px; border-radius:50px; margin-bottom:28px;
+    animation:zapIn 0.35s cubic-bezier(0.34,1.56,0.64,1) 0.1s both;
+  }
+  .hero-badge::before { content:'⚡'; }
+  @keyframes zapIn { from{opacity:0;transform:scale(0.7) translateY(10px)} to{opacity:1;transform:scale(1) translateY(0)} }
+  .hero-title {
+    font-family:'Syne',sans-serif;
+    font-size:clamp(2.6rem,6vw,5.2rem); font-weight:800; line-height:1.07;
+    letter-spacing:-0.025em; color:var(--text); margin-bottom:22px;
+    animation:blastUp 0.4s cubic-bezier(0.22,1,0.36,1) 0.18s both;
+  }
+  .hero-title .grad-text {
+    background:var(--grad); -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent; background-clip:text; position:relative;
+  }
+  .hero-title .grad-text::after {
+    content:''; position:absolute; left:0; right:0; bottom:-4px; height:3px;
+    background:var(--grad); border-radius:2px;
+    animation:underlineDash 1.2s 0.8s cubic-bezier(0.22,1,0.36,1) both;
+  }
+  @keyframes underlineDash { from{transform:scaleX(0);transform-origin:left} to{transform:scaleX(1);transform-origin:left} }
+  @keyframes blastUp { from{opacity:0;transform:translateY(40px) skewY(2deg)} to{opacity:1;transform:translateY(0) skewY(0)} }
+  .hero-sub {
+    font-size:1.1rem; color:var(--muted); max-width:560px; margin:0 auto 40px; font-weight:400;
+    animation:blastUp 0.4s cubic-bezier(0.22,1,0.36,1) 0.28s both;
+  }
+  .hero-btns {
+    display:flex; gap:14px; justify-content:center; flex-wrap:wrap;
+    animation:blastUp 0.4s cubic-bezier(0.22,1,0.36,1) 0.36s both;
+  }
+  .btn-primary {
+    background:var(--grad); color:#fff; padding:14px 36px; border-radius:50px;
+    font-weight:700; font-size:0.95rem; text-decoration:none;
+    box-shadow:0 4px 24px rgba(0,87,255,0.35);
+    transition:transform 0.15s cubic-bezier(0.34,1.56,0.64,1),box-shadow 0.15s;
+    position:relative; overflow:hidden;
+  }
+  .btn-primary::after {
+    content:''; position:absolute; inset:0;
+    background:rgba(255,255,255,0.18); transform:translateX(-100%) skewX(-15deg);
+    transition:transform 0.3s;
+  }
+  .btn-primary:hover { transform:translateY(-3px) scale(1.04); box-shadow:0 10px 36px rgba(0,87,255,0.45); }
+  .btn-primary:hover::after { transform:translateX(120%) skewX(-15deg); }
+  .btn-outline {
+    border:2px solid var(--blue); color:var(--blue); padding:13px 34px; border-radius:50px;
+    font-weight:600; font-size:0.95rem; text-decoration:none; background:transparent;
+    transition:background 0.15s,color 0.15s,transform 0.15s cubic-bezier(0.34,1.56,0.64,1);
+  }
+  .btn-outline:hover { background:var(--blue); color:#fff; transform:translateY(-3px) scale(1.04); }
+
+  /* STATS */
+  #stats {
+    position:relative; z-index:1; background:var(--grad);
+    display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); overflow:hidden;
+  }
+  #stats::before {
+    content:''; position:absolute; inset:0;
+    background:repeating-linear-gradient(90deg,rgba(255,255,255,0.06) 0px,rgba(255,255,255,0.06) 1px,transparent 1px,transparent 60px);
+    pointer-events:none; animation:scanLine 2.5s linear infinite;
+  }
+  @keyframes scanLine { from{background-position:0 0} to{background-position:60px 0} }
+  .stat-item {
+    text-align:center; padding:36px 20px;
+    border-right:1px solid rgba(255,255,255,0.15); position:relative; z-index:1;
+    animation:statPop 0.4s cubic-bezier(0.34,1.56,0.64,1) both;
+  }
+  .stat-item:nth-child(1){animation-delay:0.1s}
+  .stat-item:nth-child(2){animation-delay:0.2s}
+  .stat-item:nth-child(3){animation-delay:0.3s}
+  .stat-item:nth-child(4){animation-delay:0.4s;border-right:none}
+  @keyframes statPop { from{opacity:0;transform:scale(0.8) translateY(10px)} to{opacity:1;transform:scale(1) translateY(0)} }
+  .stat-num { font-family:'Syne',sans-serif; font-size:2.8rem; font-weight:800; color:#fff; line-height:1; text-shadow:0 2px 12px rgba(0,0,0,0.15); }
+  .stat-label { font-size:0.78rem; color:rgba(255,255,255,0.8); text-transform:uppercase; letter-spacing:0.1em; margin-top:6px; }
+
+  /* SECTIONS */
+  section { position:relative; z-index:1; padding:96px 5%; }
+  #services, #team { background:var(--offwhite); }
+  #process, #contact { background:var(--white); }
+  .section-label {
+    font-size:0.73rem; font-weight:700; letter-spacing:0.16em; text-transform:uppercase;
+    color:var(--blue); margin-bottom:10px; display:inline-flex; align-items:center; gap:6px;
+  }
+  .section-label::before { content:''; width:20px; height:2px; background:var(--blue); border-radius:2px; }
+  .section-title { font-family:'Syne',sans-serif; font-size:clamp(1.9rem,3.2vw,2.6rem); font-weight:800; line-height:1.15; margin-bottom:14px; color:var(--text); }
+  .section-sub { color:var(--muted); max-width:500px; font-size:0.97rem; }
+  .section-header { margin-bottom:56px; }
+
+  /* SERVICES */
+  .services-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(270px,1fr)); gap:22px; }
+  .service-card {
+    background:var(--white); border:1.5px solid var(--border); border-radius:20px;
+    padding:34px 28px; position:relative; overflow:hidden;
+    transition:transform 0.2s cubic-bezier(0.34,1.56,0.64,1),box-shadow 0.2s,border-color 0.2s;
+    cursor:default;
+  }
+  .service-card::before {
+    content:''; position:absolute; top:0; left:0; right:0; height:3px;
+    background:var(--grad); transform:scaleX(0); transform-origin:left;
+    transition:transform 0.22s cubic-bezier(0.22,1,0.36,1);
+  }
+  .service-card:hover { transform:translateY(-8px) scale(1.01); box-shadow:0 20px 50px rgba(0,87,255,0.12); border-color:rgba(0,87,255,0.35); }
+  .service-card:hover::before { transform:scaleX(1); }
+  .service-icon {
+    width:52px; height:52px; border-radius:14px;
+    background:linear-gradient(135deg,rgba(0,87,255,0.1) 0%,rgba(0,198,255,0.1) 100%);
+    border:1.5px solid rgba(0,87,255,0.15);
+    display:flex; align-items:center; justify-content:center; font-size:1.4rem; margin-bottom:18px;
+    transition:transform 0.2s cubic-bezier(0.34,1.56,0.64,1);
+  }
+  .service-card:hover .service-icon { transform:rotate(-8deg) scale(1.12); }
+  .service-card h3 { font-family:'Syne',sans-serif; font-size:1.08rem; font-weight:700; margin-bottom:8px; color:var(--text); }
+  .service-card p  { color:var(--muted); font-size:0.88rem; line-height:1.7; }
+
+  /* PROCESS */
+  .process-steps { display:grid; grid-template-columns:repeat(auto-fit,minmax(170px,1fr)); position:relative; }
+  .process-steps::before {
+    content:''; position:absolute; top:28px; left:8%; right:8%; height:2px;
+    background:linear-gradient(90deg,var(--blue) 0%,var(--blue3) 100%); opacity:0.2; z-index:0;
+  }
+  .process-step { text-align:center; padding:0 16px; position:relative; z-index:1; }
+  .step-num {
+    width:58px; height:58px; border-radius:50%;
+    background:var(--white); border:2.5px solid var(--blue);
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Syne',sans-serif; font-weight:800; font-size:1.1rem; color:var(--blue);
+    margin:0 auto 18px;
+    transition:background 0.15s,color 0.15s,transform 0.2s cubic-bezier(0.34,1.56,0.64,1),box-shadow 0.15s;
+    cursor:default;
+  }
+  .process-step:hover .step-num {
+    background:var(--grad); color:#fff; border-color:transparent;
+    transform:scale(1.15) rotate(-5deg); box-shadow:0 6px 22px rgba(0,87,255,0.35);
+  }
+  .process-step h3 { font-family:'Syne',sans-serif; font-weight:700; font-size:0.95rem; margin-bottom:7px; color:var(--text); }
+  .process-step p  { color:var(--muted); font-size:0.83rem; }
+
+  /* TEAM */
+  .team-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:22px; }
+  .team-card {
+    background:var(--white); border:1.5px solid var(--border); border-radius:20px;
+    padding:36px 24px; text-align:center;
+    transition:transform 0.2s cubic-bezier(0.34,1.56,0.64,1),box-shadow 0.2s,border-color 0.2s;
+    position:relative; overflow:hidden;
+  }
+  .team-card::before {
+    content:''; position:absolute; bottom:0; left:0; right:0; height:3px;
+    background:var(--grad); transform:scaleX(0); transform-origin:center;
+    transition:transform 0.22s cubic-bezier(0.22,1,0.36,1);
+  }
+  .team-card:hover { transform:translateY(-6px); box-shadow:var(--shadow); border-color:rgba(0,87,255,0.3); }
+  .team-card:hover::before { transform:scaleX(1); }
+  .team-avatar {
+    width:78px; height:78px; border-radius:50%; background:var(--grad);
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Syne',sans-serif; font-weight:800; font-size:1.5rem; color:#fff;
+    margin:0 auto 16px; box-shadow:0 6px 24px rgba(0,87,255,0.3);
+    transition:transform 0.2s cubic-bezier(0.34,1.56,0.64,1),box-shadow 0.2s;
+  }
+  .team-card:hover .team-avatar { transform:scale(1.1) rotate(5deg); box-shadow:0 10px 36px rgba(0,87,255,0.4); }
+  .team-card h3 { font-family:'Syne',sans-serif; font-weight:700; font-size:1rem; margin-bottom:4px; color:var(--text); }
+  .team-role { font-size:0.76rem; color:var(--blue); font-weight:700; letter-spacing:0.1em; text-transform:uppercase; margin-bottom:10px; }
+  .team-card p { color:var(--muted); font-size:0.84rem; }
+  .founder-badge {
+    display:inline-block; background:rgba(0,87,255,0.08); border:1px solid rgba(0,87,255,0.2);
+    color:var(--blue); font-size:0.68rem; font-weight:700; letter-spacing:0.1em;
+    text-transform:uppercase; padding:3px 12px; border-radius:50px; margin-bottom:9px;
+  }
+
+  /* CONTACT */
+  .contact-wrap { display:grid; grid-template-columns:1fr 1.5fr; gap:60px; align-items:start; }
+  .contact-info h2 { font-family:'Syne',sans-serif; font-size:2.1rem; font-weight:800; margin-bottom:14px; color:var(--text); }
+  .contact-info > p { color:var(--muted); margin-bottom:34px; }
+  .contact-detail { display:flex; gap:14px; align-items:flex-start; margin-bottom:18px; }
+  .cd-icon {
+    width:42px; height:42px; border-radius:12px;
+    background:rgba(0,87,255,0.08); border:1.5px solid rgba(0,87,255,0.15);
+    display:flex; align-items:center; justify-content:center; font-size:1rem; flex-shrink:0;
+    transition:background 0.15s,transform 0.15s cubic-bezier(0.34,1.56,0.64,1);
+  }
+  .contact-detail:hover .cd-icon { background:var(--grad); transform:scale(1.1) rotate(-8deg); }
+  .cd-text span { display:block; font-size:0.73rem; color:var(--muted); margin-bottom:2px; }
+  .cd-text strong { font-size:0.9rem; color:var(--text); }
+  .contact-form {
+    background:var(--white); border:1.5px solid var(--border); border-radius:24px;
+    padding:44px 38px; box-shadow:var(--shadow);
+  }
+  .form-row { margin-bottom:18px; }
+  .form-row label { display:block; font-size:0.77rem; font-weight:700; color:var(--muted); letter-spacing:0.07em; text-transform:uppercase; margin-bottom:7px; }
+  .form-row input,.form-row textarea,.form-row select {
+    width:100%; background:var(--offwhite); border:1.5px solid var(--border);
+    border-radius:12px; padding:12px 16px; color:var(--text);
+    font-family:'DM Sans',sans-serif; font-size:0.91rem; outline:none;
+    transition:border-color 0.15s,box-shadow 0.15s,background 0.15s;
+  }
+  .form-row input:focus,.form-row textarea:focus,.form-row select:focus {
+    border-color:var(--blue); background:#fff; box-shadow:0 0 0 3px rgba(0,87,255,0.1);
+  }
+  .form-row textarea { resize:vertical; min-height:108px; }
+  .form-row select option { background:#fff; }
+  .form-2col { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+  .btn-submit {
+    width:100%; background:var(--grad); color:#fff; border:none;
+    padding:15px; border-radius:50px; font-family:'Syne',sans-serif; font-size:1rem; font-weight:800;
+    cursor:pointer; box-shadow:0 4px 24px rgba(0,87,255,0.3); letter-spacing:0.03em;
+    transition:transform 0.15s cubic-bezier(0.34,1.56,0.64,1),box-shadow 0.15s;
+    position:relative; overflow:hidden;
+  }
+  .btn-submit::after {
+    content:''; position:absolute; inset:0; background:rgba(255,255,255,0.18);
+    transform:translateX(-100%) skewX(-15deg); transition:transform 0.35s;
+  }
+  .btn-submit:hover { transform:translateY(-2px) scale(1.02); box-shadow:0 10px 36px rgba(0,87,255,0.45); }
+  .btn-submit:hover::after { transform:translateX(120%) skewX(-15deg); }
+
+  /* FOOTER */
+  footer {
+    background:var(--text); color:rgba(255,255,255,0.9);
+    padding:56px 5% 32px; position:relative; z-index:1; overflow:hidden;
+  }
+  footer::before {
+    content:''; position:absolute; inset:0;
+    background:repeating-linear-gradient(90deg,rgba(0,87,255,0.06) 0px,rgba(0,87,255,0.06) 1px,transparent 1px,transparent 60px);
+    pointer-events:none;
+  }
+  .footer-top { display:grid; grid-template-columns:1.5fr 1fr 1fr; gap:48px; margin-bottom:44px; position:relative; z-index:1; }
+  .footer-brand p { color:rgba(255,255,255,0.5); font-size:0.87rem; margin-top:12px; max-width:280px; }
+  .footer-col h4 { font-family:'Syne',sans-serif; font-weight:700; font-size:0.85rem; letter-spacing:0.08em; text-transform:uppercase; margin-bottom:16px; color:#fff; }
+  .footer-col ul { list-style:none; }
+  .footer-col ul li { margin-bottom:9px; }
+  .footer-col ul li a {
+    color:rgba(255,255,255,0.5); text-decoration:none; font-size:0.87rem;
+    transition:color 0.12s,padding-left 0.12s; display:inline-block;
+  }
+  .footer-col ul li a:hover { color:var(--blue3); padding-left:6px; }
+  .footer-bottom {
+    border-top:1px solid rgba(255,255,255,0.1); padding-top:24px;
+    display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;
+    position:relative; z-index:1;
+  }
+  .footer-bottom p { color:rgba(255,255,255,0.4); font-size:0.8rem; }
+
+  /* CHATBOT */
+  #chat-toggle {
+    position:fixed; bottom:28px; right:28px; width:60px; height:60px; border-radius:50%;
+    background:var(--grad); border:none; cursor:pointer;
+    display:flex; align-items:center; justify-content:center; font-size:1.4rem; z-index:9999;
+    box-shadow:0 6px 28px rgba(0,87,255,0.5);
+    transition:transform 0.2s cubic-bezier(0.34,1.56,0.64,1),box-shadow 0.2s;
+  }
+  #chat-toggle::before {
+    content:''; position:absolute; inset:-6px; border-radius:50%;
+    border:2px solid rgba(0,87,255,0.4); animation:chatPulse 1.6s ease-out infinite;
+  }
+  @keyframes chatPulse { 0%{transform:scale(1);opacity:1} 100%{transform:scale(1.6);opacity:0} }
+  #chat-toggle:hover { transform:scale(1.12); box-shadow:0 10px 40px rgba(0,87,255,0.65); }
+  #chat-toggle .chat-icon,
+  #chat-toggle .close-icon { position:absolute; transition:opacity 0.2s,transform 0.2s cubic-bezier(0.34,1.56,0.64,1); }
+  #chat-toggle .close-icon { opacity:0; transform:rotate(-90deg) scale(0.6); }
+  #chat-toggle.open .chat-icon { opacity:0; transform:rotate(90deg) scale(0.6); }
+  #chat-toggle.open .close-icon { opacity:1; transform:rotate(0) scale(1); }
+
+  #chatbot {
+    position:fixed; bottom:104px; right:28px; width:350px; max-height:560px;
+    background:#fff; border:1.5px solid var(--border); border-radius:24px;
+    overflow:hidden; display:flex; flex-direction:column; z-index:9998;
+    box-shadow:0 24px 64px rgba(0,87,255,0.18);
+    transform:translateY(20px) scale(0.92); opacity:0; pointer-events:none;
+    transition:transform 0.25s cubic-bezier(0.34,1.56,0.64,1),opacity 0.2s;
+  }
+  #chatbot.open { transform:translateY(0) scale(1); opacity:1; pointer-events:all; }
+  .chat-header { background:var(--grad); padding:15px 20px; display:flex; align-items:center; gap:12px; }
+  .chat-avatar {
+    width:38px; height:38px; background:rgba(255,255,255,0.25); border-radius:50%;
+    display:flex; align-items:center; justify-content:center; font-size:1.1rem;
+    animation:avatarBob 2s ease-in-out infinite;
+  }
+  @keyframes avatarBob { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-3px)} }
+  .chat-header-info strong { display:block; font-family:'Syne',sans-serif; font-weight:700; font-size:0.92rem; color:#fff; }
+  .chat-header-info span { font-size:0.73rem; color:rgba(255,255,255,0.85); }
+  .chat-online { width:7px; height:7px; background:#4ade80; border-radius:50%; display:inline-block; margin-right:4px; animation:blink 1.5s infinite; }
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+  .chat-messages {
+    flex:1; overflow-y:auto; padding:18px 14px;
+    display:flex; flex-direction:column; gap:11px; max-height:370px; background:var(--offwhite);
+  }
+  .chat-messages::-webkit-scrollbar { width:3px; }
+  .chat-messages::-webkit-scrollbar-thumb { background:var(--border); border-radius:3px; }
+  .msg {
+    max-width:84%; padding:10px 14px; border-radius:16px; font-size:0.86rem; line-height:1.5;
+    animation:msgPop 0.25s cubic-bezier(0.34,1.56,0.64,1) both;
+  }
+  @keyframes msgPop { from{opacity:0;transform:scale(0.85) translateY(8px)} to{opacity:1;transform:scale(1) translateY(0)} }
+  .msg.bot  { background:#fff; border:1px solid var(--border); align-self:flex-start; border-bottom-left-radius:4px; color:var(--text); }
+  .msg.user { background:var(--grad); color:#fff; align-self:flex-end; border-bottom-right-radius:4px; }
+  .msg-time { font-size:0.63rem; color:var(--muted); margin-top:3px; text-align:right; }
+  .msg.bot .msg-time { text-align:left; }
+  .quick-replies { display:flex; flex-wrap:wrap; gap:6px; padding:8px 14px 10px; background:#fff; }
+  .qr-btn {
+    background:rgba(0,87,255,0.07); border:1.5px solid rgba(0,87,255,0.2);
+    color:var(--blue); padding:5px 13px; border-radius:50px;
+    font-size:0.76rem; font-weight:600; cursor:pointer; font-family:'DM Sans',sans-serif;
+    transition:background 0.15s,transform 0.15s cubic-bezier(0.34,1.56,0.64,1);
+  }
+  .qr-btn:hover { background:var(--blue); color:#fff; transform:scale(1.07); }
+  .chat-input-area { padding:10px 14px; border-top:1px solid var(--border); display:flex; gap:9px; align-items:center; background:#fff; }
+  #chat-input {
+    flex:1; background:var(--offwhite); border:1.5px solid var(--border);
+    border-radius:50px; padding:9px 16px; color:var(--text);
+    font-family:'DM Sans',sans-serif; font-size:0.87rem; outline:none;
+    transition:border-color 0.15s,box-shadow 0.15s;
+  }
+  #chat-input:focus { border-color:var(--blue); box-shadow:0 0 0 3px rgba(0,87,255,0.1); }
+  #chat-send {
+    width:38px; height:38px; border-radius:50%; background:var(--grad); border:none;
+    cursor:pointer; display:flex; align-items:center; justify-content:center;
+    font-size:0.95rem; color:#fff; flex-shrink:0;
+    transition:transform 0.15s cubic-bezier(0.34,1.56,0.64,1),box-shadow 0.15s;
+  }
+  #chat-send:hover { transform:scale(1.15) rotate(-10deg); box-shadow:0 4px 16px rgba(0,87,255,0.4); }
+  .typing {
+    display:flex; gap:4px; padding:11px 14px;
+    background:#fff; border:1px solid var(--border); border-radius:16px; border-bottom-left-radius:4px;
+    align-self:flex-start; max-width:58px;
+  }
+  .typing span { width:6px; height:6px; background:var(--muted); border-radius:50%; animation:bounce 0.9s infinite; }
+  .typing span:nth-child(2){animation-delay:0.15s}
+  .typing span:nth-child(3){animation-delay:0.3s}
+  @keyframes bounce { 0%,60%,100%{transform:translateY(0)} 30%{transform:translateY(-6px)} }
+
+  /* SCROLL REVEAL */
+  .reveal { opacity:0; transform:translateY(30px); transition:opacity 0.4s cubic-bezier(0.22,1,0.36,1),transform 0.4s cubic-bezier(0.22,1,0.36,1); }
+  .reveal.visible { opacity:1; transform:translateY(0); }
+  .reveal-left { opacity:0; transform:translateX(-40px); transition:opacity 0.4s cubic-bezier(0.22,1,0.36,1),transform 0.4s cubic-bezier(0.22,1,0.36,1); }
+  .reveal-left.visible { opacity:1; transform:translateX(0); }
+  .reveal-right { opacity:0; transform:translateX(40px); transition:opacity 0.4s cubic-bezier(0.22,1,0.36,1),transform 0.4s cubic-bezier(0.22,1,0.36,1); }
+  .reveal-right.visible { opacity:1; transform:translateX(0); }
+
+  @media(max-width:768px){
+    .nav-links{display:none}
+    .contact-wrap{grid-template-columns:1fr}
+    .footer-top{grid-template-columns:1fr}
+    .process-steps::before{display:none}
+    .form-2col{grid-template-columns:1fr}
+    #chatbot{width:calc(100vw - 40px);right:20px}
+    #stats{grid-template-columns:repeat(2,1fr)}
+    .stat-item{border-bottom:1px solid rgba(255,255,255,0.15)}
+    .stat-item:nth-child(2),.stat-item:nth-child(4){border-right:none}
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">
+    <div class="logo-hex">AS</div>
+    <span class="nav-brand"><span>Abhi</span> Software</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#services">Services</a></li>
+    <li><a href="#process">Process</a></li>
+    <li><a href="#team">Team</a></li>
+    <li><a href="#contact">Contact</a></li>
+    <li><a href="#contact" class="nav-cta">Get Quote ⚡</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="ring"></div><div class="ring"></div><div class="ring"></div><div class="ring"></div>
+  <div class="hero-orb"></div>
+  <div style="position:relative;z-index:2">
+    <div class="hero-badge">India's Trusted Tech Partner</div>
+    <h1 class="hero-title">
+      We Build <span class="grad-text">Digital</span><br/>
+      Solutions That <span class="grad-text">Scale</span>
+    </h1>
+    <p class="hero-sub">From stunning websites to intelligent AI-powered applications — Abhi Software Solutions crafts technology that drives your business forward.</p>
+    <div class="hero-btns">
+      <a href="#contact" class="btn-primary">Start Your Project →</a>
+      <a href="#services" class="btn-outline">Explore Services</a>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<div id="stats">
+  <div class="stat-item"><div class="stat-num">200+</div><div class="stat-label">Projects Delivered</div></div>
+  <div class="stat-item"><div class="stat-num">150+</div><div class="stat-label">Happy Clients</div></div>
+  <div class="stat-item"><div class="stat-num">5+</div><div class="stat-label">Years Experience</div></div>
+  <div class="stat-item"><div class="stat-num">98%</div><div class="stat-label">Client Satisfaction</div></div>
+</div>
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="section-header reveal">
+    <div class="section-label">What We Do</div>
+    <h2 class="section-title">Our Core Services</h2>
+    <p class="section-sub">End-to-end digital solutions tailored for businesses of every size.</p>
+  </div>
+  <div class="services-grid">
+    <div class="service-card reveal" style="transition-delay:.05s"><div class="service-icon">🌐</div><h3>Website Development</h3><p>Custom, responsive, and blazing-fast websites built with modern technologies. From landing pages to full platforms.</p></div>
+    <div class="service-card reveal" style="transition-delay:.1s"><div class="service-icon">📱</div><h3>Mobile App Development</h3><p>Native and cross-platform mobile applications for iOS and Android that deliver exceptional user experiences.</p></div>
+    <div class="service-card reveal" style="transition-delay:.15s"><div class="service-icon">🤖</div><h3>AI & Chatbot Solutions</h3><p>Intelligent chatbots and AI-powered tools that automate customer support and boost productivity.</p></div>
+    <div class="service-card reveal" style="transition-delay:.2s"><div class="service-icon">🎨</div><h3>UI/UX Design</h3><p>Visually stunning and user-centric interfaces designed to convert visitors into loyal customers.</p></div>
+    <div class="service-card reveal" style="transition-delay:.25s"><div class="service-icon">☁️</div><h3>Cloud & DevOps</h3><p>Scalable cloud infrastructure and DevOps pipelines for seamless deployment and operations.</p></div>
+    <div class="service-card reveal" style="transition-delay:.3s"><div class="service-icon">🛒</div><h3>E-Commerce Solutions</h3><p>Complete online stores with payment integration, inventory management, and analytics.</p></div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section id="process">
+  <div class="section-header reveal" style="text-align:center;margin:0 auto 64px">
+    <div class="section-label" style="justify-content:center">How We Work</div>
+    <h2 class="section-title" style="text-align:center">Our Process</h2>
+  </div>
+  <div class="process-steps">
+    <div class="process-step reveal" style="transition-delay:.05s"><div class="step-num">01</div><h3>Discovery</h3><p>We understand your goals and requirements through detailed consultation.</p></div>
+    <div class="process-step reveal" style="transition-delay:.12s"><div class="step-num">02</div><h3>Planning</h3><p>Crafting a detailed roadmap, tech stack selection, and timeline.</p></div>
+    <div class="process-step reveal" style="transition-delay:.19s"><div class="step-num">03</div><h3>Design</h3><p>Creating wireframes and pixel-perfect UI designs for your approval.</p></div>
+    <div class="process-step reveal" style="transition-delay:.26s"><div class="step-num">04</div><h3>Development</h3><p>Agile-driven coding with regular updates and progress reviews.</p></div>
+    <div class="process-step reveal" style="transition-delay:.33s"><div class="step-num">05</div><h3>Launch</h3><p>Testing, deployment, and post-launch support for a smooth go-live.</p></div>
+  </div>
+</section>
+
+<!-- TEAM -->
+<section id="team">
+  <div class="section-header reveal" style="text-align:center;margin:0 auto 52px">
+    <div class="section-label" style="justify-content:center">The People Behind</div>
+    <h2 class="section-title" style="text-align:center">Meet Our Team</h2>
+    <p class="section-sub" style="margin:0 auto;text-align:center">A passionate team of innovators dedicated to building exceptional digital products.</p>
+  </div>
+  <div class="team-grid">
+    <div class="team-card reveal" style="transition-delay:.05s">
+      <div class="team-avatar">AT</div>
+      <div class="founder-badge">Founder & CEO</div>
+      <h3>Abhinav Tiwary</h3><div class="team-role">Founder</div>
+      <p>Visionary leader with deep expertise in software architecture and business strategy.</p>
+    </div>
+    <div class="team-card reveal" style="transition-delay:.12s">
+      <div class="team-avatar">VT</div>
+      <div class="founder-badge">Co-Founder</div>
+      <h3>Mr. Vishal Tiwary</h3><div class="team-role">Co-Founder</div>
+      <p>Technology strategist co-building innovative solutions that deliver lasting client value.</p>
+    </div>
+    <div class="team-card reveal" style="transition-delay:.19s">
+      <div class="team-avatar">RS</div>
+      <h3>Rohan Shukla</h3><div class="team-role">Manager</div>
+      <p>Operations and client management expert ensuring every project exceeds expectations.</p>
+    </div>
+    <div class="team-card reveal" style="transition-delay:.26s">
+      <div class="team-avatar">PD</div>
+      <h3>Prabhat Dubay</h3><div class="team-role">Ground Manager</div>
+      <p>On-the-ground execution specialist keeping projects and teams running smoothly.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="contact-wrap">
+    <div class="contact-info reveal-left">
+      <div class="section-label">Get In Touch</div>
+      <h2>Let's Build Something Amazing Together</h2>
+      <p>Have a project in mind? Tell us about it — we'd love to bring your vision to life.</p>
+      <div class="contact-detail"><div class="cd-icon">📧</div><div class="cd-text"><span>Email</span><strong>hello@abhinavtiwarigmail.com.in</strong></div></div>
+      <div class="contact-detail"><div class="cd-icon">📞</div><div class="cd-text"><span>Phone</span><strong>+91 6209001378</strong></div></div>
+      <div class="contact-detail"><div class="cd-icon">📍</div><div class="cd-text"><span>Location</span><strong>Daltonganj ,palamu jharkhand,India</strong></div></div>
+    </div>
+    <div class="contact-form reveal-right">
+      <div class="form-2col">
+        <div class="form-row"><label>Your Name</label><input type="text" placeholder="Rajesh Kumar" /></div>
+        <div class="form-row"><label>Email Address</label><input type="email" placeholder="you@example.com" /></div>
+      </div>
+      <div class="form-row"><label>Service Needed</label><select><option value="">Select a service...</option><option>Website Development</option><option>Mobile App Development</option><option>AI & Chatbot Solutions</option><option>UI/UX Design</option><option>E-Commerce Solutions</option><option>Other</option></select></div>
+      <div class="form-row"><label>Budget Range</label><select><option value="">Select budget...</option><option>Under ₹50,000</option><option>₹50,000 – ₹1,00,000</option><option>₹1,00,000 – ₹5,00,000</option><option>₹5,00,000+</option></select></div>
+      <div class="form-row"><label>Project Details</label><textarea placeholder="Tell us about your project, goals, and timeline..."></textarea></div>
+      <button class="btn-submit" onclick="handleSubmit()">Send Message ⚡</button>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-top">
+    <div class="footer-brand">
+      <div style="display:flex;align-items:center;gap:11px;margin-bottom:4px">
+        <div class="logo-hex" style="width:36px;height:36px;font-size:12px">AS</div>
+        <span style="font-family:'Syne',sans-serif;font-weight:700;font-size:1.05rem;color:#fff"><span style="color:#00c6ff">Abhi</span> Software Solutions</span>
+      </div>
+      <p>Building digital excellence since day one. Your trusted partner for websites, apps, and intelligent solutions.</p>
+    </div>
+    <div class="footer-col"><h4>Services</h4><ul><li><a href="#">Website Development</a></li><li><a href="#">Mobile Apps</a></li><li><a href="#">AI & Chatbots</a></li><li><a href="#">UI/UX Design</a></li><li><a href="#">E-Commerce</a></li></ul></div>
+    <div class="footer-col"><h4>Company</h4><ul><li><a href="#">About Us</a></li><li><a href="#team">Our Team</a></li><li><a href="#">Portfolio</a></li><li><a href="#">Blog</a></li><li><a href="#contact">Contact</a></li></ul></div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2025 Abhi Software Solutions. Founded by Abhinav Tiwary. All rights reserved.</p>
+    <p>Privacy Policy · Terms of Service</p>
+  </div>
+</footer>
+
+<!-- CHATBOT -->
+<button id="chat-toggle" onclick="toggleChat()">
+  <span class="chat-icon">💬</span>
+  <span class="close-icon">✕</span>
+</button>
+<div id="chatbot">
+  <div class="chat-header">
+    <div class="chat-avatar">🤖</div>
+    <div class="chat-header-info">
+      <strong>Abhi AI Assistant</strong>
+      <span><span class="chat-online"></span>Online · Replies instantly</span>
+    </div>
+  </div>
+  <div class="chat-messages" id="chat-messages"></div>
+  <div class="quick-replies">
+    <button class="qr-btn" onclick="sendQuick('What services do you offer?')">Services</button>
+    <button class="qr-btn" onclick="sendQuick('How much does a website cost?')">Pricing</button>
+    <button class="qr-btn" onclick="sendQuick('Who founded Abhi Software?')">About Us</button>
+    <button class="qr-btn" onclick="sendQuick('How can I contact you?')">Contact</button>
+  </div>
+  <div class="chat-input-area">
+    <input type="text" id="chat-input" placeholder="Type a message..." onkeydown="if(event.key==='Enter')sendMessage()" />
+    <button id="chat-send" onclick="sendMessage()">➤</button>
+  </div>
+</div>
+
+<script>
+  // Scroll reveal
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.reveal,.reveal-left,.reveal-right').forEach(el => obs.observe(el));
+
+  // Chatbot
+  let chatOpen = false;
+  function toggleChat() {
+    chatOpen = !chatOpen;
+    document.getElementById('chatbot').classList.toggle('open', chatOpen);
+    document.getElementById('chat-toggle').classList.toggle('open', chatOpen);
+    if (chatOpen && document.getElementById('chat-messages').children.length === 0)
+      setTimeout(() => addBotMsg("👋 Hi! Welcome to **Abhi Software Solutions**! How can I help you today?"), 350);
+  }
+  function getTime() { const d=new Date(); return d.getHours().toString().padStart(2,'0')+':'+d.getMinutes().toString().padStart(2,'0'); }
+  function addBotMsg(text) {
+    const c=document.getElementById('chat-messages');
+    const t=document.createElement('div'); t.className='typing';
+    t.innerHTML='<span></span><span></span><span></span>';
+    c.appendChild(t); c.scrollTop=c.scrollHeight;
+    setTimeout(()=>{
+      t.remove();
+      const m=document.createElement('div'); m.className='msg bot';
+      m.innerHTML=text.replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>')+`<div class="msg-time">${getTime()}</div>`;
+      c.appendChild(m); c.scrollTop=c.scrollHeight;
+    }, 650);
+  }
+  function addUserMsg(text) {
+    const c=document.getElementById('chat-messages');
+    const m=document.createElement('div'); m.className='msg user';
+    m.innerHTML=text+`<div class="msg-time">${getTime()}</div>`;
+    c.appendChild(m); c.scrollTop=c.scrollHeight;
+  }
+  const R={
+    services:"We offer:\n• 🌐 **Website Development**\n• 📱 **Mobile Apps**\n• 🤖 **AI & Chatbots**\n• 🎨 **UI/UX Design**\n• ☁️ **Cloud & DevOps**\n• 🛒 **E-Commerce**\n\nWhich interests you?",
+    pricing:"Basic website from ₹25,000, mobile apps from ₹75,000, AI chatbots from ₹40,000. **Contact us for a free quote!**",
+    founder:"Founded by **Abhinav Tiwary**, Co-founder **Mr. Vishal Tiwary**, Manager **Rohan Shukla**, Ground Manager **Prabhat Dubay**. 🚀",
+    about:"200+ projects delivered, 98% client satisfaction. Specializing in web, mobile & AI solutions!",
+    contact:"📧 hello@abhisoftware.in\n📞 +91 98765 43210\n📍 Lucknow, UP, India\n\nOr fill our **Contact Form** above!",
+    chatbot:"Custom AI chatbots starting from ₹40,000. Want more details?",
+    mobile:"Native & cross-platform apps for iOS & Android from ₹75,000. Want a consultation?",
+    team:"👤 **Abhinav Tiwary** – Founder\n👤 **Vishal Tiwary** – Co-Founder\n👤 **Rohan Shukla** – Manager\n👤 **Prabhat Dubay** – Ground Manager",
+    hi:"Hi there! 😊 Welcome to Abhi Software Solutions! What can I help you with?",
+    def:"Our team will contact you soon. For immediate help: **+91 98765 43210** or **hello@abhisoftware.in** 😊"
+  };
+  function getReply(i){
+    const l=i.toLowerCase();
+    if(l.includes('service')||l.includes('offer')) return R.services;
+    if(l.includes('price')||l.includes('cost')||l.includes('much')||l.includes('budget')) return R.pricing;
+    if(l.includes('founder')||l.includes('abhinav')||l.includes('founded')) return R.founder;
+    if(l.includes('about')||l.includes('company')) return R.about;
+    if(l.includes('contact')||l.includes('reach')||l.includes('email')||l.includes('phone')) return R.contact;
+    if(l.includes('chatbot')||l.includes('ai')||l.includes('bot')) return R.chatbot;
+    if(l.includes('mobile')||l.includes('app')) return R.mobile;
+    if(l.includes('team')||l.includes('manager')||l.includes('vishal')||l.includes('rohan')||l.includes('prabhat')) return R.team;
+    if(l.includes('hi')||l.includes('hello')||l.includes('hey')) return R.hi;
+    if(l.includes('website')) return R.pricing;
+    return R.def;
+  }
+  function sendMessage(){
+    const inp=document.getElementById('chat-input');
+    const txt=inp.value.trim(); if(!txt) return;
+    addUserMsg(txt); inp.value='';
+    setTimeout(()=>addBotMsg(getReply(txt)),120);
+  }
+  function sendQuick(txt){
+    if(!chatOpen) toggleChat();
+    setTimeout(()=>{ addUserMsg(txt); setTimeout(()=>addBotMsg(getReply(txt)),120); },120);
+  }
+  function handleSubmit(){
+    const b=document.querySelector('.btn-submit');
+    b.textContent='✅ Message Sent!'; b.style.background='linear-gradient(120deg,#22c55e,#0ea5e9)';
+    setTimeout(()=>{ b.textContent='Send Message ⚡'; b.style.background=''; },3000);
+  }
+  document.querySelectorAll('a[href^="#"]').forEach(a=>{
+    a.addEventListener('click',e=>{
+      const t=document.querySelector(a.getAttribute('href'));
+      if(t){ e.preventDefault(); t.scrollIntoView({behavior:'smooth',block:'start'}); }
+    });
+  });
+</script>
+</body>
+</html>
